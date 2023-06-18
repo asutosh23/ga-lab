@@ -30,8 +30,23 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         env:
-          COMMIT_VAR: ${{ contains(github.event.head_commit.message, '[commit var]') }}
+          LOCAL_DOCKER_REPO: "local-docker-registry.default:5000"
+          NPM_REPO_URL: "http://verdaccio.default:4873"
+          DOCKER_BUILDKIT: 1
+          DOCKER_DRIVER: overlay2
+          # These are usually specified by the entrypoint, however the
+          # Kubernetes executor doesn't run entrypoints
+          # https://gitlab.com/gitlab-org/gitlab-runner/-/issues/4125
+          DOCKER_HOST: tcp://localhost:2375
+          DOCKER_TLS_CERTDIR: ""
+          CROSS_REMOTE: 1
+
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo $COMMIT_VAR
+          echo $LOCAL_DOCKER_REPO
+          echo $NPM_REPO_URL
+          echo $DOCKER_BUILDKIT
+          echo $DOCKER_HOST
+          echo $DOCKER_TLS_CERTDIR
+          echo $CROSS_REMOTE
