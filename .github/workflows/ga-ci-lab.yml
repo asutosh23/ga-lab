@@ -1,34 +1,25 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+name: ordinalhub-ci
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
 #   push:
 #     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  test:
+    runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: schema-test
+        run: echo Running schema-test
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: mr-docker-build-app
+        run: echo Running mr-docker-build-app
         env:
           LOCAL_DOCKER_REPO: "local-docker-registry.default:5000"
           NPM_REPO_URL: "http://verdaccio.default:4873"
@@ -41,12 +32,20 @@ jobs:
           DOCKER_TLS_CERTDIR: ""
           CROSS_REMOTE: 1
 
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          echo $LOCAL_DOCKER_REPO
-          echo $NPM_REPO_URL
-          echo $DOCKER_BUILDKIT
-          echo $DOCKER_HOST
-          echo $DOCKER_TLS_CERTDIR
-          echo $CROSS_REMOTE
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: tag-docker-build-app
+        run: echo Running tag-docker-build-app
+
+      - name: default-docker-build-app
+        run: echo Running default-docker-build-app
+
+      - name: staging-schema-deploy
+        run: echo Running staging-schema-deploy
+
+      
