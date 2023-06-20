@@ -47,5 +47,3 @@ jobs:
 
       - name: staging-schema-deploy
         run: echo Running staging-schema-deploy
-
-      
