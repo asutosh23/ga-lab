@@ -1,10 +1,10 @@
 name: ordinalhub-ci
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
 
-  # workflow_dispatch:
+  workflow_dispatch:
 
 env:
   LOCAL_DOCKER_REPO: "local-docker-registry.default:5000"
