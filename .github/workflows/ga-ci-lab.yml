@@ -1,0 +1,52 @@
+name: ordinalhub-ci
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+#   push:
+#     branches: [ "main" ]
+
+  workflow_dispatch:
+
+env:
+  LOCAL_DOCKER_REPO: "local-docker-registry.default:5000"
+  NPM_REPO_URL: "http://verdaccio.default:4873"
+  DOCKER_BUILDKIT: 1
+  DOCKER_DRIVER: overlay2
+  # These are usually specified by the entrypoint, however the
+  # Kubernetes executor doesn't run entrypoints
+  # https://gitlab.com/gitlab-org/gitlab-runner/-/issues/4125
+  DOCKER_HOST: tcp://localhost:2375
+  DOCKER_TLS_CERTDIR: ""
+  CROSS_REMOTE: 1
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: schema-test
+        run: echo Running schema-test
+
+      # Runs a set of commands using the runners shell
+      - name: mr-docker-build-app
+        run: echo Running mr-docker-build-app $LOCAL_DOCKER_REPO
+        
+
+
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: tag-docker-build-app
+        run: echo Running tag-docker-build-app
+
+      - name: default-docker-build-app
+        run: echo Running default-docker-build-app
+
+      - name: staging-schema-deploy
+        run: echo Running staging-schema-deploy
