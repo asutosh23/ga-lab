@@ -1,6 +1,6 @@
 # name: ordinalhub-ci
 # on:
-#   # Triggers the workflow on push or pull request events but only for the "main" bran
+#   # Triggers the workflow on push or pull request events but only for the "main" bra
 #   # push:
 #   #   branches: [ "main" ]
 
