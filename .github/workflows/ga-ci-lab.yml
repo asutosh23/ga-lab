@@ -49,19 +49,3 @@
 #         run: echo Running mr-docker-build-app 
         
 
-#   # JOB 2 
-#   build-deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-
-#       - uses: actions/checkout@v3
-
-#       # Runs a single command using the runners shell
-#       - name: tag-docker-build-app
-#         run: echo Running tag-docker-build-app
-
-#       - name: default-docker-build-app
-#         run: echo Running default-docker-build-app
-
-#       - name: staging-schema-deploy
-#         run: echo Running staging-schema-deploy
