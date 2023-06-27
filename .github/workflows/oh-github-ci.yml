@@ -1,9 +1,10 @@
 name: ordinalhub-ci
+
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" b
   push:
     branches: [ "main" ]
-#   workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   LOCAL_DOCKER_REPO: "local-docker-registry.default:5000"
@@ -44,8 +45,5 @@ jobs:
           pnpx prisma validate
           pnpx prisma migrate deploy
 
-      # Runs a set of commands using the runners shell
-      - name: mr-docker-build-app
-        run: echo Running mr-docker-build-app 
         
 
