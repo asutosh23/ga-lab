@@ -1,0 +1,25 @@
+name: ordinalhub-ci
+
+on:
+  push:
+    branches: [ "main" ]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+
+
+jobs:
+
+  # JOB 1
+  test:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Print Commit ID
+          run: |
+            echo "CI_DATE=$(date +%s)" >> "$GITHUB_ENV";
+            echo "CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
+            "CI_DATE=$(date +%s)";
+            "CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)";
+
+        
+
