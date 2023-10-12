@@ -26,6 +26,7 @@ jobs:
             echo "CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
             echo ${{ env.CI_DATE}}
             echo ${{ env.CI_SHA_SHORT}}
+            echo "CI_SHA_SHORT=${GITHUB_SHA:0:7}"
 
 
         - name: Runner Path Collection
