@@ -1,4 +1,4 @@
-name: ordinalhub-ci
+name: gh-lab-ci
 
 on:
   push:
@@ -20,6 +20,11 @@ jobs:
             CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7);
             echo $CI_DATE
             echo $CI_SHA_SHORT
+
+        - name: Print URL
+          run:
+            URL="oh-inscription-worker:${{ env.CI_SHA_SHORT }}-${{ env.CI_DATE }}"
+            echo $URL
 
         
 
