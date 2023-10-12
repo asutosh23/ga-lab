@@ -23,7 +23,7 @@ jobs:
 
         - name: Print URL
           run:
-            URL="oh-inscription-worker:${{ env.CI_SHA_SHORT }}-${{ env.CI_DATE }}"
+            URL=oh-inscription-worker:${{ env.CI_SHA_SHORT }}-${{ env.CI_DATE }}
             echo $URL
 
         
