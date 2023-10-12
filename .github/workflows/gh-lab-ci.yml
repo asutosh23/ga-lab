@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Print Commit ID
-          run: |
-            echo "CI_DATE=$(date +%s)" >> "$GITHUB_ENV";
-            echo "CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV;
-            "CI_DATE=$(date +%s)";
-            "CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)";
+          run: 
+            CI_DATE=$(date +%s);
+            CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7);
+            echo $CI_DATE
+            echo $CI_SHA_SHORT
 
         
 
