@@ -14,23 +14,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-        - name: Print Commit ID
-          run: 
-            CI_DATE=$(date +%s);
-            CI_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7);
-            echo $CI_DATE
-            echo $CI_SHA_SHORT
-
-        - name: Declare sha short and branch
-          shell: bash
-          run: |
-            echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-            echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
-        
-        - name: Print the variables
-          run: |
-            echo "Branch: ${{ env.branch }}"
-            echo "Sha: ${{ env.sha_short }}"
+        - uses: actions/checkout@v1
+    
+        - name: Get Branch
+          id: branch
+          run: echo "git_branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_BRANCH
+    
+        - name: Check Branch
+          run: echo "${{ env.branch }}"
+    
+        - name: Get Hash
+          id: hash
+          run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+    
+        - name: Check Hash
+          run: echo "${{ env.hash }}"
 
         
 
