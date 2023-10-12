@@ -14,7 +14,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v1
     
         - name: Env Collection
           run : |
@@ -22,7 +21,12 @@ jobs:
             GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-7)
             echo $BRANCH_NAME
             echo $GITHUB_SHA_SHORT
+
+        - name: Runner Path Collection
+          run : |
             echo ${{ github.workspace }}
+            cd ${{ github.workspace }}
+            ls
 
         
 
