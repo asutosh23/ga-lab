@@ -30,3 +30,7 @@ jobs:
           echo "CI_COMMIT_BRANCH: ${{ env.CI_COMMIT_BRANCH }}"
           echo "CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}"
           echo "CI_SHA_SHORT: ${{ env.CI_SHA_SHORT }}"
+
+      - name: Run Makefile
+        run: make print-env
+
