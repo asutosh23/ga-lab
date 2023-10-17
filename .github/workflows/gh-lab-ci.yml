@@ -45,10 +45,10 @@ jobs:
             echo "CI_COMMIT_REF_NAME=$(echo ${{ github.ref_name }} | tr '/' '-')" >> $GITHUB_ENV
             echo "CI_SHA_SHORT=$(echo ${{ github.sha }} | cut -c 1-7)" >> $GITHUB_ENV;
             echo $CI_SHA_SHORT
-            echo $env.CI_IMAGE_TAG
-            echo $env.CI_COMMIT_TAG
-            echo $env.CI_COMMIT_BRANCH
-            echo $env.CI_COMMIT_REF_NAME
+            echo $CI_IMAGE_TAG
+            echo $CI_COMMIT_TAG
+            echo $CI_COMMIT_BRANCH
+            echo $CI_COMMIT_REF_NAME
 
 
         - name: Runner Path Collection
