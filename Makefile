@@ -38,6 +38,12 @@ ifeq ($(VERSION),)
     VERSION := v0.0.0-$(subst /,_,$(BRANCH_REF))-$(COMMIT_HASH)
 endif
 
+DATE_FMT = +%FT%T%z
+ifdef SOURCE_DATE_EPOCH
+    BUILD_DATE ?= $(shell date -u -d "@$(SOURCE_DATE_EPOCH)" "$(DATE_FMT)" 2>/dev/null || date -u -r "$(SOURCE_DATE_EPOCH)" "$(DATE_FMT)" 2>/dev/null || date -u "$(DATE_FMT)")
+else
+    BUILD_DATE ?= $(shell date "$(DATE_FMT)")
+
 
 # Print the environment variables
 print-env:
@@ -53,7 +59,6 @@ print-env:
 	@echo "BRANCH_REF: ${BRANCH_REF}"
 	@echo "VERSION: ${VERSION}"
 	@echo "BUILD_DATE: ${BUILD_DATE}"
-	@echo "GOLDFLAGS: ${GOLDFLAGS}"
 	@echo "-------- git exec info"
 	@echo "git describe: $(shell git describe --tags --exact-match 2>/dev/null)"
 	@echo "git rev-parse: $(shell git rev-parse --short HEAD 2>/dev/null)"
