@@ -20,7 +20,7 @@ jobs:
   
       - name: Set env for image tag
         run: |
-          TAG_NAME=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
+          TAG_NAME=$(basename ${{ github.ref }})
           echo "CI_IMAGE_TAG=${TAG_NAME}" >> $GITHUB_ENV
           echo "CI_COMMIT_TAG=${{ github.event.release.name }}" >> $GITHUB_ENV
           echo "CI_COMMIT_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
