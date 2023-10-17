@@ -5,10 +5,11 @@ on:
     # Pattern matched against refs/tags
     tags:
       - '*' # Push events to every tag not containing / 
-    branches: main
   release:
     types: [published, created, released]
-  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
 
 jobs:
   build:
@@ -23,9 +24,9 @@ jobs:
           TAG_NAME=$(basename ${{ github.ref }})
           echo "CI_IMAGE_TAG=${TAG_NAME}" >> $GITHUB_ENV
           echo "CI_COMMIT_TAG=${{ github.event.release.name }}" >> $GITHUB_ENV
-          echo "CI_COMMIT_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
-          echo "CI_COMMIT_REF_NAME=$(echo ${{ github.ref }} | tr '/' '-')" >> $GITHUB_ENV
-          echo "CI_SHA_SHORT=$(echo ${{ github.sha }} | cut -c 1-7)" >> $GITHUB_ENV
+          echo "CI_COMMIT_BRANCH=${GITHUB_HEAD_REF}" >> $GITHUB_ENV;
+          echo "CI_COMMIT_REF_NAME=$(echo ${GITHUB_REF_NAME} | tr '/' '-')" >> $GITHUB_ENV
+          echo "CI_SHA_SHORT=$(echo ${{ github.sha }} | cut -c 1-7)" >> $GITHUB_ENV;
   
       - name: Print variable values
         run: |
