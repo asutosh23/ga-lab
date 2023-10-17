@@ -1,10 +1,18 @@
 name: gh-lab-ci
 
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     types: [ opened, synchronize ]
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    types: [ opened, synchronize ]
+    # Pattern matched against refs/tags
+    tags:
+      - '*' # Push events to every tag not containing /
+  release:
+    types: [published, created, released]
+  workflow_dispatch:
 
 
 
@@ -28,18 +36,19 @@ jobs:
             echo ${{ env.CI_SHA_SHORT}}
             echo "CI_SHA_SHORT=${GITHUB_SHA:0:7}"
 
+
         - name: Set env for image tag
           run: |
+            echo "CI_IMAGE_TAG=$(echo ${{ github.ref}} | tr '/' '-')" >> $GITHUB_ENV;
+            echo "CI_COMMIT_TAG=${{ github.event.release.name }}" >> $GITHUB_ENV;
+            echo "CI_COMMIT_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV;
+            echo "CI_COMMIT_REF_NAME=$(echo ${{ github.ref_name }} | tr '/' '-')" >> $GITHUB_ENV
             echo "CI_SHA_SHORT=$(echo ${{ github.sha }} | cut -c 1-7)" >> $GITHUB_ENV;
-            echo "CI_IMAGE_TAG=${{ github.ref }}" >> $GITHUB_ENV;
-            echo "CI_COMMIT_TAG=${{ github.ref }}" >> $GITHUB_ENV
-            echo "CI_COMMIT_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
-            echo "CI_COMMIT_REF_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
-            echo ${{ env.CI_SHA_SHORT }}
-            echo ${{ env.CI_IMAGE_TAG }}
-            echo ${{ env.CI_COMMIT_TAG }}
-            echo ${{ env.CI_COMMIT_BRANCH }}
-            echo ${{ env.CI_COMMIT_REF_NAME }}
+            echo $CI_SHA_SHORT
+            echo $env.CI_IMAGE_TAG
+            echo $env.CI_COMMIT_TAG
+            echo $env.CI_COMMIT_BRANCH
+            echo $env.CI_COMMIT_REF_NAME
 
 
         - name: Runner Path Collection
