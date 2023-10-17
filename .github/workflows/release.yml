@@ -36,6 +36,12 @@ jobs:
           echo "CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}"
           echo "CI_SHA_SHORT: ${{ env.CI_SHA_SHORT }}"
 
+      - name: Print Git Commands
+        run: |
+          git describe --tags --exact-match 2>/dev/null
+          git rev-parse --short HEAD 2>/dev/null
+          git symbolic-ref -q --short HEAD 2>/dev/null
+
       - name: Run Makefile
         run: make print-env
 
