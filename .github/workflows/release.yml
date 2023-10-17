@@ -1,6 +1,11 @@
 name: Release Workflow
 
 on:
+  push:
+    tags:
+      - '*' # Push events to every tag not containing / 
+  # release:
+  #   types: [published, created, released]
   workflow_run:
     workflows: ["PR Workflow"]
     types:
