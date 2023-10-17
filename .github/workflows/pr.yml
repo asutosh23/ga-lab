@@ -1,0 +1,20 @@
+name: PR Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Release
+        if: github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: echo "Merged PR. Create a release."
+        env:
+          PR_TOKEN: ${{ secrets.PR_TOKEN }}
