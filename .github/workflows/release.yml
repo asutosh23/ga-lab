@@ -34,13 +34,8 @@ jobs:
           echo "CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}"
           echo "CI_SHA_SHORT: ${{ env.CI_SHA_SHORT }}"
 
-      - name: Get current branch
-        id: check_step
-        run: |
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw##*/}
-          echo "{name}=branch" >> $GITHUB_OUTPUT
-          echo "Branch is $branch."
+      - name: Echo branch
+        run: echo "${{ github.event.base_ref }}"
 
       # - name: Run Makefile
       #   run: make print-env
