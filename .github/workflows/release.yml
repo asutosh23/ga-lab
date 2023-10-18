@@ -37,7 +37,7 @@ jobs:
       - name: Get Branch
         run: |
           RAW=$(git branch -r --contains ${{ github.ref }})
-          echo "BRANCH=${raw/origin\/}" >> $GITHUB_ENV
+          echo "BRANCH=${RAW/origin\/}" >> $GITHUB_ENV
           echo "${{ env.BRANCH }}"
 
       # - name: Run Makefile
