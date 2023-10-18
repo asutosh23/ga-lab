@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '*' # Push events to every tag not containing / 
-  # release:
-  #   types: [published, created, released]
   workflow_run:
     workflows: ["PR Workflow"]
     types:
@@ -38,9 +36,8 @@ jobs:
 
       - name: Get Branch
         run: |
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw/origin\/}
-          echo ::set-env name=BRANCH::$branch
+          RAW=$(git branch -r --contains ${{ github.ref }})
+          echo "BRANCH=${raw/origin\/}" >> $GITHUB_ENV
           echo ${{ env.BRANCH }}
 
       # - name: Run Makefile
