@@ -1,13 +1,16 @@
 name: Release Workflow
 
+# on:
+#   push:
+#     tags:
+#       - '*' # Push events to every tag not containing / 
+#   workflow_run:
+#     workflows: ["PR Workflow"]
+#     types:
+#       - completed
 on:
-  push:
-    tags:
-      - '*' # Push events to every tag not containing / 
-  workflow_run:
-    workflows: ["PR Workflow"]
-    types:
-      - completed
+  push: 
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -36,6 +39,9 @@ jobs:
 
       - name: Echo branch
         run: echo "${{ github.event.base_ref }}"
+
+      - name: Print OpenSSL version
+        run: openssl --version
 
       # - name: Run Makefile
       #   run: make print-env
