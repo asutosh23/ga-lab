@@ -41,7 +41,7 @@ jobs:
         run: echo "${{ github.event.base_ref }}"
 
       - name: Print OpenSSL version
-        run: openssl --version
+        run: openssl version
 
       # - name: Run Makefile
       #   run: make print-env
