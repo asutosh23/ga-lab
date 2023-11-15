@@ -45,6 +45,6 @@ jobs:
       
       - name: Connect to PostgreSQL and create a database
         run: |
-          psql -h ${{ steps.docker.outputs.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
+          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
 
 
