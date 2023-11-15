@@ -21,6 +21,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     
     env:
+      POSTGRES_HOST: 0.0.0.0
       POSTGRES_PORT: 5432
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: postgres
@@ -29,18 +30,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Find Docker container IP
-        id: docker
-        run: |
-          # Get the container ID containing 'postgres' in its name
-          container_id=$(docker ps -qf "name=*postgres*")
+      # - name: Find Docker container IP
+      #   id: docker
+      #   run: |
+      #     # Get the container ID containing 'postgres' in its name
+      #     container_id=$(docker ps -qf "name=*postgres*")
           
-          # Get the IP of the container
-          ip=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_id")
+      #     # Get the IP of the container
+      #     ip=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_id")
           
-          # Set the IP in the environment variable
-          echo $ip
-          echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
+      #     # Set the IP in the environment variable
+      #     echo $ip
+      #     echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
 
 
       # - name: Find Docker container IP
@@ -51,8 +52,8 @@ jobs:
       #     echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
       #     echo $ip
 
-      - name: Print Docker container IP
-        run: echo "The IP address of the PostgreSQL service is ${{ env.POSTGRES_HOST }}"
+      # - name: Print Docker container IP
+      #   run: echo "The IP address of the PostgreSQL service is ${{ env.POSTGRES_HOST }}"
 
       - name: Install PostgreSQL client
         run: |
