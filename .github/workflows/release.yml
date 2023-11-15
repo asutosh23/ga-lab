@@ -1,16 +1,10 @@
 name: Release Workflow
 
-# on:
-#   push:
-#     tags:
-#       - '*' # Push events to every tag not containing / 
-#   workflow_run:
-#     workflows: ["PR Workflow"]
-#     types:
-#       - completed
 on:
-  push: 
-    branches: [ "main" ]
+  push:
+    tags:
+      - '*' # Push events to every tag not containing / 
+
 
 jobs:
   build:
