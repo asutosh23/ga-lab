@@ -44,6 +44,8 @@ jobs:
           sudo apt-get install -y postgresql-client
       
       - name: Connect to PostgreSQL and create a database
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
           psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
 
