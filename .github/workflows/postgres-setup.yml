@@ -33,7 +33,7 @@ jobs:
       - name: Find Docker container IP
         id: docker
         run: |
-          postgres_ip=$(docker ps -q --filter "name=*postgres*" | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | grep "postgres" | awk '{print $NF}')
+          postgres_ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | sed 's#^/##' | grep 'postgres' | awk '{print $NF}')
           echo $postgres_ip
           echo "POSTGRES_HOST=$postgres_ip" >> $GITHUB_ENV
 
