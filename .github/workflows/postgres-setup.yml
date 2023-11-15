@@ -29,13 +29,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Find Docker container IP
-        id: docker
+      - name: Get container IPs
+        id: docker  
         run: |
-          ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | grep postgres | cut -f2 -d ' ')
-          # ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | cut -d' ' -f1)
+          echo "ips<<EOF" >> $GITHUB_OUTPUT
+          docker ps -q | xargs -n 1 docker inspect --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | sed 's#^/##'
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Set Postgres IP 
+        run: |    
+          ip=$(echo "${{ steps.docker.outputs.ips }}" | grep postgres | cut -f2 -d' ')
           echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
-          echo $ip
+
+      # - name: Find Docker container IP
+      #   id: docker
+      #   run: |
+      #     ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | grep postgres | cut -f2 -d ' ')
+      #     # ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | cut -d' ' -f1)
+      #     echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
+      #     echo $ip
 
       - name: Print Docker container IP
         run: echo "The IP address of the PostgreSQL service is ${{ env.POSTGRES_HOST }}"
