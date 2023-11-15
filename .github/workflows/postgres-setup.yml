@@ -32,7 +32,7 @@ jobs:
       - name: Find Docker container IP
         id: docker
         run: |
-          	docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | sed 's#^/##';
+          docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | sed 's#^/##';
           # ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | grep postgres | cut -d ' ' -f2)
           # echo "ip=$ip" >> $GITHUB_ENV
 
