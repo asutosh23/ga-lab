@@ -29,17 +29,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get container IPs
+      - name: Find Docker container IP
+        id: docker
         run: |
-          echo "ips<<EOF" >> $GITHUB_OUTPUT
-          docker ps -q | xargs -n 1 docker inspect --format '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | sed 's#^/##' 
-          echo "EOF" >> $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT
-      
-      - name: Set Postgres IP 
-        run: |    
-          ip=$(echo "${{ steps.docker.outputs.ips }}" | grep postgres | cut -f2 -d' ')
+          # Get the container ID containing 'postgres' in its name
+          container_id=$(docker ps -qf "name=*postgres*")
+          
+          # Get the IP of the container
+          ip=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_id")
+          
+          # Set the IP in the environment variable
+          echo $ip
           echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
+
 
       # - name: Find Docker container IP
       #   id: docker
