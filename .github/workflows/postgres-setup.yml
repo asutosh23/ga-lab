@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  postgres-setup:
     runs-on: ubuntu-latest
 
     services:
@@ -32,19 +32,20 @@ jobs:
       - name: Find Docker container IP
         id: docker
         run: |
-          ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | grep postgres | cut -d ' ' -f2)
-          echo "ip=$ip" >> $GITHUB_ENV
+          	docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | sed 's#^/##';
+          # ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | grep postgres | cut -d ' ' -f2)
+          # echo "ip=$ip" >> $GITHUB_ENV
 
-      - name: Print Docker container IP
-        run: echo "The IP address of the PostgreSQL service is ${{ env.ip }}"
+      # - name: Print Docker container IP
+      #   run: echo "The IP address of the PostgreSQL service is ${{ env.ip }}"
 
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
+      # - name: Install PostgreSQL client
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y postgresql-client
       
-      - name: Connect to PostgreSQL and create a database
-        run: |
-          psql -h ${{ steps.docker.outputs.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
+      # - name: Connect to PostgreSQL and create a database
+      #   run: |
+      #     psql -h ${{ steps.docker.outputs.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
 
 
