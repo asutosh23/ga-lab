@@ -1,3 +1,3 @@
 # ga-lab
 
-- successful postgress setup run - https://github.com/asutosh23/ga-lab/actions/runs/6874672789/job/18696776537
+- [recent run: postgres setup](https://github.com/asutosh23/ga-lab/actions/runs/6874740629/job/18696972081)
