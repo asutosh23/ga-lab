@@ -1,0 +1,70 @@
+name: Postgres Workflow Manual Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  postgres-setup:
+    runs-on: ubuntu-latest
+    
+    env:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PostgreSQL container
+        run: |
+          docker run --name test-postgres -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} -e POSTGRES_USER=${{ env.POSTGRES_USER }} -p ${{ env.POSTGRES_PORT }}:5432 -d postgres
+        
+      - name: Get PostgreSQL container IP
+        id: postgres
+        run: |
+          postgres_ip=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' test-postgres)
+          echo "POSTGRES_HOST=$postgres_ip" >> $GITHUB_ENV
+
+      - name: Wait for PostgreSQL to start
+        run: |
+         until docker exec test-postgres psql -U ${{ env.POSTGRES_USER }} -c '\l'; do
+           echo "Waiting for PostgreSQL to start..."
+           sleep 2
+         done
+         echo "PostgreSQL is ready at postgresql://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@${{ env.POSTGRES_HOST }}:${{ env.POSTGRES_PORT }}/${{ env.POSTGRES_USER }}"
+
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Connect to PostgreSQL and create a database
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        run: |
+          psql -h ${{ env.POSTGRES_HOST }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
+
+      - name: Create table
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}  
+        run: |
+          psql -h ${{ env.POSTGRES_HOST }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL);"
+ 
+      - name: Insert data
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        run: |
+          psql -h ${{ env.POSTGRES_HOST }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "INSERT INTO users (name) VALUES ('John'), ('Jane'), ('Mary');"
+
+      - name: Query data
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        run: |
+          psql -h ${{ env.POSTGRES_HOST }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "SELECT * FROM users;"
+            
+
