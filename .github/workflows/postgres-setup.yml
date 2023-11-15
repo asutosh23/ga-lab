@@ -21,7 +21,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     
     env:
-      POSTGRES_HOST: 0.0.0.0
+      # POSTGRES_HOST: 0.0.0.0
       POSTGRES_PORT: 5432
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: postgres
@@ -30,18 +30,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Find Docker container IP
-      #   id: docker
-      #   run: |
-      #     # Get the container ID containing 'postgres' in its name
-      #     container_id=$(docker ps -qf "name=*postgres*")
-          
-      #     # Get the IP of the container
-      #     ip=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_id")
-          
-      #     # Set the IP in the environment variable
-      #     echo $ip
-      #     echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
+      - name: Find Docker container IP
+        id: docker
+        run: |
+          postgres_ip=$(docker ps -q --filter "name=*postgres*" | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | grep "postgres" | awk '{print $NF}')
+          echo $postgres_ip
+          echo "POSTGRES_HOST=$postgres_ip" >> $GITHUB_ENV
+
 
 
       # - name: Find Docker container IP
