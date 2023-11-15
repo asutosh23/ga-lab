@@ -33,7 +33,10 @@ jobs:
         id: docker
         run: |
           ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | grep postgres | cut -d ' ' -f2)
-          echo "::set-output name=ip::$ip"
+          echo "ip=$ip" >> $GITHUB_ENV
+
+      - name: Print Docker container IP
+        run: echo "The IP address of the PostgreSQL service is ${{ env.ip }}"
 
       - name: Install PostgreSQL client
         run: |
