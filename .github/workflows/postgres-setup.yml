@@ -33,10 +33,10 @@ jobs:
         id: docker
         run: |
           ip=$(docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | cut -d' ' -f1)
-          echo "ip=$ip" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=$ip" >> $GITHUB_ENV
 
       - name: Print Docker container IP
-        run: echo "The IP address of the PostgreSQL service is ${{ env.ip }}"
+        run: echo "The IP address of the PostgreSQL service is ${{ env.POSTGRES_HOST }}"
 
       - name: Install PostgreSQL client
         run: |
@@ -47,13 +47,13 @@ jobs:
         env:
           PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
-          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
+          psql -h ${{ env.POSTGRES_HOST }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
 
       - name: Create table
         env:
           PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}  
         run: |
-          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL);"
+          psql -h ${{ env.POSTGRES_HOST }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL);"
  
       - name: Insert data
         env:
