@@ -42,11 +42,26 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client
+
+      # Create table
+      - name: Create table
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}  
+        run: |
+          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL);"
       
-      - name: Connect to PostgreSQL and create a database
+      # Insert data  
+      - name: Insert data
         env:
           PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
-          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -c "CREATE DATABASE luxor_index;"
-
+          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "INSERT INTO users (name) VALUES ('John'), ('Jane'), ('Mary');"
+      
+      # Query data
+      - name: Query data
+        env:
+          PGPASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        run: |
+          psql -h ${{ env.ip }} -p ${{ env.POSTGRES_PORT }} -U ${{ env.POSTGRES_USER }} -d luxor_index -c "SELECT * FROM users;"
+            
 
