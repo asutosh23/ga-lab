@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '*' # Push events to every tag not containing / 
+  workflow_dispatch:
 
 env:
   TIMESTAMP: ${{ current-date:YYYY-MM-DDTHH:MM:SS }}
