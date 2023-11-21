@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  TIMESTAMP: ${{ current-date:YYYY-MM-DDTHH:MM:SS }}
+  TIMESTAMP: ${{ github.workflow }}_${{ github.ref }}_${{ current-date:YYYY-MM-DDTHH:mm:ss }}
 
 
 jobs:
