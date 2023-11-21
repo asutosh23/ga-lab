@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  TIMESTAMP: $(date +'%d-%m-%Y)
+  TIMESTAMP: $(date +'%d-%m-%Y')
 
 
 jobs:
