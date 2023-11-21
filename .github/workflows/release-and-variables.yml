@@ -5,6 +5,9 @@ on:
     tags:
       - '*' # Push events to every tag not containing / 
 
+env:
+  TIMESTAMP: ${{ current-date:YYYY-MM-DDTHH:MM:SS }}
+
 
 jobs:
   build:
@@ -34,8 +37,9 @@ jobs:
       - name: Echo branch
         run: echo "${{ github.event.base_ref }}"
 
-      - name: Print OpenSSL version
-        run: openssl version
+      - name: Print TIMESTAMP
+        run: |
+          echo "TIMESTAMP: ${{ env.CI_IMAGE_TAG }}"
 
       # - name: Run Makefile
       #   run: make print-env
