@@ -1,7 +1,8 @@
 name: Push To Main Workflow
 
 on:
-  push: main
+  push: 
+    types: main
 
 jobs:
   create-file-in-1st-job:
