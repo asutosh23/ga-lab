@@ -16,7 +16,7 @@ jobs:
   retrieve-file-in-2nd-job:
     runs-on: ubuntu-latest
 
-     steps:
-       - name: Retrieve the file created in previous step
-         run: |
-           cat ${{ env.RUNNER_TEMP }}/sample.txt
+    steps:
+      - name: Retrieve the file created in previous step
+        run: |
+          cat ${{ env.RUNNER_TEMP }}/sample.txt
