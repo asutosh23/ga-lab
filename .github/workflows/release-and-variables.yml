@@ -1,9 +1,9 @@
 name: Release And Variables Workflow
 
 on:
-  push:
-    tags:
-      - '*' # Push events to every tag not containing / 
+  # push:
+  #   tags:
+  #     - '*' # Push events to every tag not containing / 
   workflow_dispatch:
 
 env:
