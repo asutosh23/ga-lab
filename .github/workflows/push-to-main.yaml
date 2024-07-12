@@ -1,0 +1,22 @@
+name: Push To Main Workflow
+
+on:
+  push: main
+
+jobs:
+  create-file-in-1st-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create a file in temp folder of runner
+        run: |
+          touch ${{ env.RUNNER_TEMP }}/sample.txt
+          echo "hey this worked..." >> ${{ env.RUNNER_TEMP }}/sample.txt
+
+  retrieve-file-in-2nd-job:
+    runs-on: ubuntu-latest
+
+     steps:
+       - name: Retrieve the file created in previous step
+         run: |
+           cat ${{ env.RUNNER_TEMP }}/sample.txt
